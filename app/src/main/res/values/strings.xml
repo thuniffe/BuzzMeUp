@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BuzzMeUp</string>
+    <string name="vibration_not_supported">Device does not support vibration</string>
+    <string name="vibrate_button">BuzzMeUp</string>
+    <string name="pattern_item">Patterns</string>
+    <string name="save_button">Save Pattern</string>
+</resources>
