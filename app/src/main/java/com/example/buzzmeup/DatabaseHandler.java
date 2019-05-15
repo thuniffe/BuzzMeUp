@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "Patterndb";
     private static final String TABLE_PATTERN = "patterns";
     private static final String KEY_ID = "id";
@@ -25,6 +25,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_PATTERNS_TABLE = "CREATE TABLE " + TABLE_PATTERN + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_PATTERN + " TEXT" + ")";
         db.execSQL(CREATE_PATTERNS_TABLE);
+
+       // addPattern("false false false false false false");
     }
 
     @Override
@@ -34,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addPattern(String pattern) {
+    public void addPattern(String pattern) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -43,28 +45,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_PATTERN, null, values);
         db.close();
     }
-    String getPattern(int id){
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_PATTERN, new String[] { KEY_ID, KEY_PATTERN }, KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor.getString(1);
-    }
 
     public ArrayList<String> getAllPatterns() {
-        ArrayList<String> patternList = new ArrayList<String>();
+        ArrayList<String> patternList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_PATTERN;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                patternList.add(cursor.getString(1));
-            } while (cursor.moveToNext());
+        if(cursor != null && cursor.getCount() > 0){
+            if (cursor.moveToFirst()) {
+                do {
+                    patternList.add(cursor.getString(1));
+                } while (cursor.moveToNext());
+            }
+        }
+        db.close();
+        if(!(cursor==null)){
+            cursor.close();
         }
         return patternList;
 

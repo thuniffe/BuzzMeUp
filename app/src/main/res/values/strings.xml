@@ -4,4 +4,6 @@
     <string name="vibrate_button">BuzzMeUp</string>
     <string name="pattern_item">Patterns</string>
     <string name="save_button">Save Pattern</string>
+    <string name="delete_button">Delete saved</string>
+    <string name="clear_button">Clear</string>
 </resources>
